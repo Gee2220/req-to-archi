@@ -5,14 +5,19 @@ from pydantic import BaseModel
 from agents.architect import generate_architecture
 from agents.database import generate_database
 from agents.planner import generate_api_plan
-
+from agents.devops import generate_terraform
 app = FastAPI()
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origins,  # Allows your React app
+    allow_credentials=True,
+    allow_methods=["*"],    # Allows POST, GET, etc.
+    allow_headers=["*"],    # Allows Content-Type, etc.
 )
 
 class ProjectRequest(BaseModel):
@@ -49,6 +54,11 @@ async def get_api(req: ProjectRequest):
     except Exception as e:
         print(f"API Error: {e}")
         return {"output": "Ollama error. Is the model pulled?"}
+
+@app.post("/generate/infra")
+async def infra(req: ProjectRequest):
+    # In a real app, you'd pass the architecture output here
+    return {"output": generate_terraform(req.requirement)}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)

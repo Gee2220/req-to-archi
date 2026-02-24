@@ -74,6 +74,7 @@ export default function App() {
           <ArchiCard title="System Architecture" icon="🏗️" endpoint="architecture" requirement={requirement} />
           <ArchiCard title="Database Schema" icon="💾" endpoint="database" requirement={requirement} />
           <ArchiCard title="API & Logic" icon="🔌" endpoint="api" requirement={requirement} />
+          <ArchiCard title="Infrastructure (Terraform)" endpoint="infra" requirement={requirement} />
         </div>
         
         <footer style={styles.footer}>
